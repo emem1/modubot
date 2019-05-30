@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Scrolling Nav - Start Bootstrap Template</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="css/scrolling-nav.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand js-scroll-trigger" href="#page-top">Modubot</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#about">Guide</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#services">About Us</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#contact">Controls</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <header class="bg-primary text-white">
+    <div class="container text-center">
+      <h1>Welcome to Modubot</h1>
+      <p class="lead">An intuitive modular robot designed for your home</p>
+    </div>
+  </header>
+
+  <section id="about">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+          <h2>Guide</h2>
+          <p class="lead">This is a guide to how to use this web application to control the modubot.</p>
+          <ul>
+            <li>Clickable nav links that smooth scroll to page sections</li>
+            <li>Responsive behavior when clicking nav links perfect for a one page website</li>
+            <li>Bootstrap's scrollspy feature which highlights which section of the page you're on in the navbar</li>
+            <li>Minimal custom CSS so you are free to explore your own unique design options</li>
+          </ul>
+        </div>  
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="bg-light">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+          <h1>Controls</h1>
+           <div class="stopwatch">00:00:00</div>
+    <ul class="results"></ul>
+    <nav class="controls">
+        <a href="#" class="button" onclick="stopwatch.start();"><img src="https://drive.google.com/uc?export=view&id=1lNTPDYYmORQojq60IvtnYPZFb019vhBt"
+    style="width: 30px; max-width: 100%; height: auto"/></a>
+        <a href="#"class="button" onclick="stopwatch.stop();"><img src="https://drive.google.com/uc?export=view&id=14mFt1B-N88aNTtlv-vsAyx5O7m4e_xC2"
+    style="width: 30px; max-width: 100%; height: auto" /></a>
+        <a href="#" class="button" onclick="stopwatch.restart();"><img src="https://drive.google.com/uc?export=view&id=1pycI2k79t9BsdagpxkoL-6RJKi2E6K_9" style="width: 30px; max-width: 100%; height: auto"/></a>
+    </nav>
+    
+    <script>
+        var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+        function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+        var Stopwatch = function () {
+            function Stopwatch(display, results) {
+                _classCallCheck(this, Stopwatch);
+
+                this.running = false;
+                this.display = display;
+                this.results = results;
+                this.laps = [];
+                this.reset();
+                this.print(this.times);
+            }
+
+            _createClass(Stopwatch, [{
+                key: 'reset',
+                value: function reset() {
+                    this.times = [0, 0, 0];
+                }
+            }, {
+                key: 'start',
+                value: function start() {
+                    if (!this.time) this.time = performance.now();
+                    if (!this.running) {
+                        this.running = true;
+                        requestAnimationFrame(this.step.bind(this));
+                    }
+                }
+            }, {
+                key: 'lap',
+                value: function lap() {
+                    var times = this.times;
+                    var li = document.createElement('li');
+                    li.innerText = this.format(times);
+                    this.results.appendChild(li);
+                }
+            }, {
+                key: 'stop',
+                value: function stop() {
+                    this.running = false;
+                    this.time = null;
+                }
+            }, {
+                key: 'restart',
+                value: function restart() {
+                    if (!this.time) this.time = performance.now();
+                    if (!this.running) {
+                        this.running = true;
+                        requestAnimationFrame(this.step.bind(this));
+                    }
+                    this.reset();
+                }
+            }, {
+                key: 'clear',
+                value: function clear() {
+                    clearChildren(this.results);
+                }
+            }, {
+                key: 'step',
+                value: function step(timestamp) {
+                    if (!this.running) return;
+                    this.calculate(timestamp);
+                    this.time = timestamp;
+                    this.print();
+                    requestAnimationFrame(this.step.bind(this));
+                }
+            }, {
+                key: 'calculate',
+                value: function calculate(timestamp) {
+                    var diff = timestamp - this.time;
+                    // Hundredths of a second are 100 ms
+                    this.times[2] += diff / 10;
+                    // Seconds are 100 hundredths of a second
+                    if (this.times[2] >= 100) {
+                        this.times[1] += 1;
+                        this.times[2] -= 100;
+                    }
+                    // Minutes are 60 seconds
+                    if (this.times[1] >= 60) {
+                        this.times[0] += 1;
+                        this.times[1] -= 60;
+                    }
+                }
+            }, {
+                key: 'print',
+                value: function print() {
+                    this.display.innerText = this.format(this.times);
+                }
+            }, {
+                key: 'format',
+                value: function format(times) {
+                    return pad0(times[0], 2) + ':' + pad0(times[1], 2) + ':' + pad0(Math.floor(times[2]), 2);
+                }
+            }]);
+
+            return Stopwatch;
+        }();
+
+        function pad0(value, count) {
+            var result = value.toString();
+            for (; result.length < count; --count) {
+                result = '0' + result;
+            }return result;
+        }
+
+        function clearChildren(node) {
+            while (node.lastChild) {
+                node.removeChild(node.lastChild);
+            }
+        }
+
+        var stopwatch = new Stopwatch(document.querySelector('.stopwatch'), document.querySelector('.results'));
+    </script>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-5 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; Modubot 2019</p>
+    </div>
+    <!-- /.container -->
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Plugin JavaScript -->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom JavaScript for this theme -->
+  <script src="js/scrolling-nav.js"></script>
+
+</body>
+
+</html>
